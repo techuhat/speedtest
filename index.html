@@ -158,9 +158,21 @@
       }
     }
 
-    startButton.addEventListener("click", () => {
-      measureDownloadSpeed();
-    });
+    let testRunning = false;
+
+startBtn.addEventListener("click", async () => {
+  if (testRunning) return; // prevent multiple runs
+
+  testRunning = true;
+  startBtn.disabled = true;
+  speedDisplay.innerHTML = "0 <span class='unit'>Mbps</span>";
+  progressFill.style.width = "0%";
+
+  await measureSpeed();
+
+  startBtn.disabled = false;
+  testRunning = false;
+});
   </script>
 </body>
 </html>
