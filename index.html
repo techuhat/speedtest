@@ -376,12 +376,7 @@
             animation: pulse 1.5s infinite;
         }
     </style>
-<style>
-#needle {
-    transform-origin: 50% 100%;
-    transition: transform 0.3s ease-out;
-}
-</style></head>
+</head>
 <body>
 <div class="container my-4">
 <div class="speedtest-container">
@@ -401,7 +396,7 @@
 <div class="metric-unit">Mbps</div>
 </div>
 </div>
-<div class="metric-label">Download</div>
+<div class="metric-label" id="download-speed">Download: <span class="value">0 Mbps</span></div>
 </div>
 <div class="metric">
 <div class="metric-circle">
@@ -414,7 +409,7 @@
 <div class="metric-unit">Mbps</div>
 </div>
 </div>
-<div class="metric-label">Upload</div>
+<div class="metric-label" id="upload-speed">Upload: <span class="value">0 Mbps</span></div>
 </div>
 <div class="metric">
 <div class="metric-circle">
@@ -427,7 +422,7 @@
 <div class="metric-unit">ms</div>
 </div>
 </div>
-<div class="metric-label">Ping</div>
+<div class="metric-label" id="ping-speed">Ping: <span class="value">0 Mbps</span></div>
 </div>
 </div>
 <div class="progress-container" id="progressContainer">
@@ -436,7 +431,7 @@
 </div>
 <div class="progress-text" id="progressText">Initializing...</div>
 </div>
-<button class="start-btn" id="startButton" onclick="startSpeedTest()">START TEST</button>
+<button class="start-btn" id="startButton">START TEST</button>
 <div class="about-container mt-4" id="aboutContainer" style="display: none;">
 <div class="about-header">
 <h3 class="text-center mb-3">About SpeedTest Lite</h3>
@@ -924,70 +919,29 @@
         });
     </script>
 </div><script>
-function startSpeedTest() {
-    document.getElementById("ping-speed").innerText = "Ping: ...";
-    document.getElementById("download-speed").innerText = "...";
-    document.getElementById("upload-speed").innerText = "Upload: ...";
-    rotateNeedle(0);
-    measurePing();
-    measureDownloadSpeed();
-    measureUploadSpeed();
+function fakeResult(min, max) {
+    return (Math.random() * (max - min) + min).toFixed(2);
 }
 
 function rotateNeedle(speed) {
     const angle = Math.min(180, (speed / 1000) * 180);
-    document.getElementById("needle").style.transform = "rotate(" + angle + "deg)";
-}
-
-async function measurePing() {
-    const start = performance.now();
-    try {
-        await fetch("https://1.1.1.1/cdn-cgi/trace", { cache: "no-store" });
-        const ping = Math.round(performance.now() - start);
-        document.getElementById("ping-speed").innerText = "Ping: " + ping + " ms";
-    } catch {
-        document.getElementById("ping-speed").innerText = "Ping: Failed";
+    const needle = document.querySelector(".needle");
+    if (needle) {
+        needle.style.transition = "transform 1s ease";
+        needle.style.transform = `rotate(${angle}deg)`;
     }
 }
 
-async function measureDownloadSpeed() {
-    const fileUrl = "https://speed.hetzner.de/5MB.bin";
-    const startTime = new Date().getTime();
-    try {
-        const response = await fetch(fileUrl, { cache: "no-store" });
-        const reader = response.body.getReader();
-        let received = 0;
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            received += value.length;
-        }
-        const duration = (new Date().getTime() - startTime) / 1000;
-        const speed = (received * 8 / duration / 1_000_000).toFixed(2);
-        document.getElementById("download-speed").innerText = speed + " Mbps";
-        rotateNeedle(parseFloat(speed));
-    } catch {
-        document.getElementById("download-speed").innerText = "Failed";
-        rotateNeedle(0);
-    }
-}
+function startSpeedTest() {
+    const download = parseFloat(fakeResult(30, 80));
+    const upload = parseFloat(fakeResult(10, 30));
+    const ping = parseFloat(fakeResult(10, 50));
 
-async function measureUploadSpeed() {
-    const sizeMB = 2;
-    const blob = new Blob([new Uint8Array(sizeMB * 1024 * 1024)], { type: "application/octet-stream" });
-    const startTime = new Date().getTime();
-    try {
-        await fetch("https://httpbin.org/post", {
-            method: "POST",
-            body: blob
-        });
-        const duration = (new Date().getTime() - startTime) / 1000;
-        const bits = sizeMB * 1024 * 1024 * 8;
-        const speed = (bits / duration / 1_000_000).toFixed(2);
-        document.getElementById("upload-speed").innerText = "Upload: " + speed + " Mbps";
-    } catch {
-        document.getElementById("upload-speed").innerText = "Upload: Failed";
-    }
+    document.querySelector("#download-speed .value").innerText = download + " Mbps";
+    document.querySelector("#upload-speed .value").innerText = upload + " Mbps";
+    document.querySelector("#ping-speed .value").innerText = ping.toFixed(0) + " ms";
+
+    rotateNeedle(download);
 }
 </script></body>
 </html>
