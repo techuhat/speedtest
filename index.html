@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpeedTest Lite</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SpeedTest Lite</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
         :root {
             --neon-cyan: #00e6e6;
             --neon-glow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
@@ -375,135 +376,121 @@
             animation: pulse 1.5s infinite;
         }
     </style>
-</head>
+<style>
+#needle {
+    transform-origin: 50% 100%;
+    transition: transform 0.3s ease-out;
+}
+</style></head>
 <body>
-    <div class="container my-4">
-        <div class="speedtest-container">
-            <div class="title">
-                <h1>SPEEDTEST <span>LITE</span></h1>
-            </div>
-            <div class="subtitle">Test your real internet speed</div>
-            
-            <div class="metrics">
-                <div class="metric">
-                    <div class="metric-circle">
-                        <svg width="130" height="130" viewBox="0 0 130 130">
-                            <circle cx="65" cy="65" r="54" class="metric-bg" />
-                            <circle cx="65" cy="65" r="54" class="metric-progress" id="downloadProgress" />
-                        </svg>
-                        <div class="metric-value">
-                            <span id="downloadValue">0</span>
-                            <div class="metric-unit">Mbps</div>
-                        </div>
-                    </div>
-                    <div class="metric-label">Download</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-circle">
-                        <svg width="130" height="130" viewBox="0 0 130 130">
-                            <circle cx="65" cy="65" r="54" class="metric-bg" />
-                            <circle cx="65" cy="65" r="54" class="metric-progress" id="uploadProgress" />
-                        </svg>
-                        <div class="metric-value">
-                            <span id="uploadValue">0</span>
-                            <div class="metric-unit">Mbps</div>
-                        </div>
-                    </div>
-                    <div class="metric-label">Upload</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-circle">
-                        <svg width="130" height="130" viewBox="0 0 130 130">
-                            <circle cx="65" cy="65" r="54" class="metric-bg" />
-                            <circle cx="65" cy="65" r="54" class="metric-progress" id="pingProgress" />
-                        </svg>
-                        <div class="metric-value">
-                            <span id="pingValue">0</span>
-                            <div class="metric-unit">ms</div>
-                        </div>
-                    </div>
-                    <div class="metric-label">Ping</div>
-                </div>
-            </div>
-            
-            <div class="progress-container" id="progressContainer">
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar"></div>
-                </div>
-                <div class="progress-text" id="progressText">Initializing...</div>
-            </div>
-            
-            <button id="startButton" class="start-btn">START TEST</button>
-            
-            <div class="about-container mt-4" id="aboutContainer" style="display: none;">
-                <div class="about-header">
-                    <h3 class="text-center mb-3">About SpeedTest Lite</h3>
-                </div>
-                <div class="about-content">
-                    <p><strong>SpeedTest Lite</strong> is a lightweight, browser-based tool designed to measure your internet connection's performance. It provides accurate measurements of your connection's download speed, upload speed, and ping (latency).</p>
-                    
-                    <p class="text-center my-3">
-                        <a href="https://techuhat.github.io/techuhat" target="_blank" class="techuhat-link">
-                            <span class="tech-text">Tech</span><span class="uhat-text">Uhat</span>
-                        </a>
-                    </p>
-                    
-                    <h5>How It Works</h5>
-                    <p>SpeedTest Lite works by transferring sample data to and from your device and measuring the time it takes to complete these transfers. The test consists of three phases:</p>
-                    <ul>
-                        <li><strong>Ping Test:</strong> Measures the time it takes for a small packet of data to travel from your device to our server and back. Lower ping values indicate better connection quality.</li>
-                        <li><strong>Download Test:</strong> Measures how quickly your connection can retrieve data from the internet. The test downloads sample files and calculates your speed in megabits per second (Mbps).</li>
-                        <li><strong>Upload Test:</strong> Measures how quickly your connection can send data to the internet. The test uploads sample data and calculates your speed in megabits per second (Mbps).</li>
-                    </ul>
-                    
-                    <h5>Understanding Your Results</h5>
-                    <p>Here's what your speed test results mean:</p>
-                    <ul>
-                        <li><strong>Download Speed (Mbps):</strong> Higher is better. This affects streaming video quality, file download times, and web browsing speed.</li>
-                        <li><strong>Upload Speed (Mbps):</strong> Higher is better. This affects video calls, posting to social media, and cloud backups.</li>
-                        <li><strong>Ping (ms):</strong> Lower is better. This affects gaming, video calls, and real-time applications.</li>
-                    </ul>
-                    
-                    <h5>Reference Speeds</h5>
-                    <p>Here are some reference points for internet speeds:</p>
-                    <ul>
-                        <li><strong>Basic web browsing:</strong> 1-5 Mbps download</li>
-                        <li><strong>HD video streaming:</strong> 5-10 Mbps download</li>
-                        <li><strong>4K video streaming:</strong> 25+ Mbps download</li>
-                        <li><strong>Online gaming:</strong> 10+ Mbps download, 1+ Mbps upload, ping under 50ms</li>
-                        <li><strong>Video conferencing:</strong> 3+ Mbps download, 3+ Mbps upload, ping under 100ms</li>
-                    </ul>
-                    
-                    <h5>Privacy</h5>
-                    <p>SpeedTest Lite respects your privacy. We don't store your IP address or track your browsing habits. The test simply measures your connection speed and displays the results.</p>
-                    
-                    <div class="text-center mt-4">
-                        <button id="closeAboutButton" class="btn btn-outline-info">Close</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-4">
-                <a href="#" id="aboutButton" class="btn btn-link text-secondary">About SpeedTest Lite</a
- 
-
-
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>&copy; Umar — SpeedTest Lite
-                <a href="https://github.com/yourusername/speedtest-lite" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github github-icon"></i>
-                </a>
-            </p>
-        </div>
-    </div>
-
-    <!-- LibreSpeed JS Library (Minified) -->
-    <script>
+<div class="container my-4">
+<div class="speedtest-container">
+<div class="title">
+<h1>SPEEDTEST <span>LITE</span></h1>
+</div>
+<div class="subtitle">Test your real internet speed</div>
+<div class="metrics">
+<div class="metric">
+<div class="metric-circle">
+<svg height="130" viewbox="0 0 130 130" width="130">
+<circle class="metric-bg" cx="65" cy="65" r="54"></circle>
+<circle class="metric-progress" cx="65" cy="65" id="downloadProgress" r="54"></circle>
+</svg>
+<div class="metric-value">
+<span id="downloadValue">0</span>
+<div class="metric-unit">Mbps</div>
+</div>
+</div>
+<div class="metric-label">Download</div>
+</div>
+<div class="metric">
+<div class="metric-circle">
+<svg height="130" viewbox="0 0 130 130" width="130">
+<circle class="metric-bg" cx="65" cy="65" r="54"></circle>
+<circle class="metric-progress" cx="65" cy="65" id="uploadProgress" r="54"></circle>
+</svg>
+<div class="metric-value">
+<span id="uploadValue">0</span>
+<div class="metric-unit">Mbps</div>
+</div>
+</div>
+<div class="metric-label">Upload</div>
+</div>
+<div class="metric">
+<div class="metric-circle">
+<svg height="130" viewbox="0 0 130 130" width="130">
+<circle class="metric-bg" cx="65" cy="65" r="54"></circle>
+<circle class="metric-progress" cx="65" cy="65" id="pingProgress" r="54"></circle>
+</svg>
+<div class="metric-value">
+<span id="pingValue">0</span>
+<div class="metric-unit">ms</div>
+</div>
+</div>
+<div class="metric-label">Ping</div>
+</div>
+</div>
+<div class="progress-container" id="progressContainer">
+<div class="progress-bar-container">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="progress-text" id="progressText">Initializing...</div>
+</div>
+<button class="start-btn" id="startButton" onclick="startSpeedTest()">START TEST</button>
+<div class="about-container mt-4" id="aboutContainer" style="display: none;">
+<div class="about-header">
+<h3 class="text-center mb-3">About SpeedTest Lite</h3>
+</div>
+<div class="about-content">
+<p><strong>SpeedTest Lite</strong> is a lightweight, browser-based tool designed to measure your internet connection's performance. It provides accurate measurements of your connection's download speed, upload speed, and ping (latency).</p>
+<p class="text-center my-3">
+<a class="techuhat-link" href="https://techuhat.github.io/techuhat" target="_blank">
+<span class="tech-text">Tech</span><span class="uhat-text">Uhat</span>
+</a>
+</p>
+<h5>How It Works</h5>
+<p>SpeedTest Lite works by transferring sample data to and from your device and measuring the time it takes to complete these transfers. The test consists of three phases:</p>
+<ul>
+<li><strong>Ping Test:</strong> Measures the time it takes for a small packet of data to travel from your device to our server and back. Lower ping values indicate better connection quality.</li>
+<li><strong>Download Test:</strong> Measures how quickly your connection can retrieve data from the internet. The test downloads sample files and calculates your speed in megabits per second (Mbps).</li>
+<li><strong>Upload Test:</strong> Measures how quickly your connection can send data to the internet. The test uploads sample data and calculates your speed in megabits per second (Mbps).</li>
+</ul>
+<h5>Understanding Your Results</h5>
+<p>Here's what your speed test results mean:</p>
+<ul>
+<li><strong>Download Speed (Mbps):</strong> Higher is better. This affects streaming video quality, file download times, and web browsing speed.</li>
+<li><strong>Upload Speed (Mbps):</strong> Higher is better. This affects video calls, posting to social media, and cloud backups.</li>
+<li><strong>Ping (ms):</strong> Lower is better. This affects gaming, video calls, and real-time applications.</li>
+</ul>
+<h5>Reference Speeds</h5>
+<p>Here are some reference points for internet speeds:</p>
+<ul>
+<li><strong>Basic web browsing:</strong> 1-5 Mbps download</li>
+<li><strong>HD video streaming:</strong> 5-10 Mbps download</li>
+<li><strong>4K video streaming:</strong> 25+ Mbps download</li>
+<li><strong>Online gaming:</strong> 10+ Mbps download, 1+ Mbps upload, ping under 50ms</li>
+<li><strong>Video conferencing:</strong> 3+ Mbps download, 3+ Mbps upload, ping under 100ms</li>
+</ul>
+<h5>Privacy</h5>
+<p>SpeedTest Lite respects your privacy. We don't store your IP address or track your browsing habits. The test simply measures your connection speed and displays the results.</p>
+<div class="text-center mt-4">
+<button class="btn btn-outline-info" id="closeAboutButton">Close</button>
+</div>
+</div>
+</div>
+<div class="text-center mt-4">
+<a class="btn btn-link text-secondary" href="#" id="aboutButton">About SpeedTest Lite</a>
+</div>
+<div class="footer">
+<p>© Umar — SpeedTest Lite
+                <a href="https://github.com/yourusername/speedtest-lite" rel="noopener noreferrer" target="_blank">
+<i class="fab fa-github github-icon"></i>
+</a>
+</p>
+</div>
+</div>
+<!-- LibreSpeed JS Library (Minified) -->
+<script>
         /* LibreSpeed - Main */
         var LibreSpeed = function() {
             // Test settings
@@ -936,5 +923,71 @@
             });
         });
     </script>
-</body>
+</div><script>
+function startSpeedTest() {
+    document.getElementById("ping-speed").innerText = "Ping: ...";
+    document.getElementById("download-speed").innerText = "...";
+    document.getElementById("upload-speed").innerText = "Upload: ...";
+    rotateNeedle(0);
+    measurePing();
+    measureDownloadSpeed();
+    measureUploadSpeed();
+}
+
+function rotateNeedle(speed) {
+    const angle = Math.min(180, (speed / 1000) * 180);
+    document.getElementById("needle").style.transform = "rotate(" + angle + "deg)";
+}
+
+async function measurePing() {
+    const start = performance.now();
+    try {
+        await fetch("https://1.1.1.1/cdn-cgi/trace", { cache: "no-store" });
+        const ping = Math.round(performance.now() - start);
+        document.getElementById("ping-speed").innerText = "Ping: " + ping + " ms";
+    } catch {
+        document.getElementById("ping-speed").innerText = "Ping: Failed";
+    }
+}
+
+async function measureDownloadSpeed() {
+    const fileUrl = "https://speed.hetzner.de/5MB.bin";
+    const startTime = new Date().getTime();
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        const reader = response.body.getReader();
+        let received = 0;
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            received += value.length;
+        }
+        const duration = (new Date().getTime() - startTime) / 1000;
+        const speed = (received * 8 / duration / 1_000_000).toFixed(2);
+        document.getElementById("download-speed").innerText = speed + " Mbps";
+        rotateNeedle(parseFloat(speed));
+    } catch {
+        document.getElementById("download-speed").innerText = "Failed";
+        rotateNeedle(0);
+    }
+}
+
+async function measureUploadSpeed() {
+    const sizeMB = 2;
+    const blob = new Blob([new Uint8Array(sizeMB * 1024 * 1024)], { type: "application/octet-stream" });
+    const startTime = new Date().getTime();
+    try {
+        await fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: blob
+        });
+        const duration = (new Date().getTime() - startTime) / 1000;
+        const bits = sizeMB * 1024 * 1024 * 8;
+        const speed = (bits / duration / 1_000_000).toFixed(2);
+        document.getElementById("upload-speed").innerText = "Upload: " + speed + " Mbps";
+    } catch {
+        document.getElementById("upload-speed").innerText = "Upload: Failed";
+    }
+}
+</script></body>
 </html>
