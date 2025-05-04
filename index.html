@@ -1,319 +1,940 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SpeedTest Lite</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-    display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #000;
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-  overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeedTest Lite</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00e6e6;
+            --neon-glow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #001220;
+            background-image: 
+                radial-gradient(circle, rgba(0, 30, 60, 0.3) 1px, transparent 1px),
+                radial-gradient(circle, rgba(0, 30, 60, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px, 20px 20px;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+        }
+        
+        .speedtest-container {
+            background-color: rgba(0, 18, 36, 0.8);
+            border-radius: 20px;
+            padding: 40px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .title h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        
+        .title h1 span {
+            color: var(--neon-cyan);
+            text-shadow: var(--neon-glow);
+        }
+        
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .metrics {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .metric {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+            padding: 10px;
+        }
+        
+        .metric-circle {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin-bottom: 15px;
+        }
+        
+        .metric-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .metric-circle circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+        
+        .metric-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+        
+        .metric-progress {
+            stroke: var(--neon-cyan);
+            stroke-dasharray: 339.292;
+            stroke-dashoffset: 339.292;
+            transition: stroke-dashoffset 1s ease-in-out;
+            filter: drop-shadow(0 0 5px var(--neon-cyan));
+        }
+        
+        .metric-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+        }
+        
+        .metric-unit {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #6c757d;
+        }
+        
+        .metric-label {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 5px;
+        }
+        
+        .start-btn {
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto 30px;
+            padding: 15px 30px;
+            background-color: transparent;
+            color: var(--neon-cyan);
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--neon-cyan);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .start-btn:hover {
+            color: #001220;
+            box-shadow: var(--neon-glow);
+        }
+        
+        .start-btn:hover::before {
+            width: 100%;
+        }
+        
+        .start-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .start-btn:disabled:hover::before {
+            width: 0;
+        }
+        
+        .start-btn:disabled:hover {
+            color: var(--neon-cyan);
+            box-shadow: none;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .footer a {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover {
+            color: var(--neon-cyan);
+        }
+        
+        .github-icon {
+            font-size: 1.2rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        /* About section styles */
+        .about-container {
+            background-color: rgba(0, 18, 36, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid rgba(0, 230, 230, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+        }
+        
+        .about-header h3 {
+            color: var(--neon-cyan);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(0, 230, 230, 0.5);
+        }
+        
+        .about-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .about-content h5 {
+            color: var(--neon-cyan);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .about-content ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .about-content li {
+            margin-bottom: 5px;
+        }
+        
+        /* TechUhat link styles */
+        .techuhat-link {
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+        
+        .techuhat-link:hover {
+            box-shadow: 0 0 15px rgba(0, 230, 230, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .tech-text {
+            color: #ffffff;
+        }
+        
+        .uhat-text {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+        
+        #aboutButton,
+        .btn-link {
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border: 1px solid transparent;
+            border-radius: 20px;
+        }
+        
+        #aboutButton:hover {
+            color: var(--neon-cyan);
+            border-color: rgba(0, 230, 230, 0.3);
+            box-shadow: 0 0 10px rgba(0, 230, 230, 0.1);
+        }
+        
 
-    .bubbles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
 
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,170,255,0.5), rgba(0,0,0,0));
-      filter: blur(20px);
-      animation: float 20s infinite;
-    }
 
-    .bubble:nth-child(1) { width: 200px; height: 200px; left: 10%; animation-delay: 0s; }
-    .bubble:nth-child(2) { width: 300px; height: 300px; left: 70%; animation-delay: 5s; }
-    .bubble:nth-child(3) { width: 150px; height: 150px; left: 40%; animation-delay: 10s; }
-    .bubble:nth-child(4) { width: 250px; height: 250px; left: 80%; animation-delay: 2s; }
-    .bubble:nth-child(5) { width: 100px; height: 100px; left: 20%; animation-delay: 7s; }
 
-    @keyframes float {
-      0% { top: 100%; transform: scale(1); }
-      50% { transform: translateY(-50vh) scale(1.2); }
-      100% { top: -200px; transform: translateY(-100vh) scale(1); }
-    }
 
-    header {
-      padding: 20px 40px;
-      background: linear-gradient(135deg, #001F3F, #007BFF);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand-name {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, #ffffff, #00aaff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 50px 20px;
-      text-align: center;
-    }
-
-    .speed-meter {
-      font-size: 4rem;
-      font-weight: bold;
-      animation: pulse 1.2s infinite alternate;
-      color: #00aaff;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(1); opacity: 0.8; }
-      to { transform: scale(1.1); opacity: 1; }
-    }
-
-    .unit {
-      font-size: 1.3rem;
-      color: #aaa;
-    }
-
-    .btn-custom {
-      background-color: #00aaff;
-      color: #000;
-      border: none;
-      font-weight: 600;
-      padding: 12px 30px;
-      font-size: 18px;
-      border-radius: 8px;
-    }
-
-    footer {
-      background-color: #111;
-      padding: 20px;
-      text-align: center;
-      font-size: 14px;
-      color: #aaa;
-    }
-
-    .modal-content {
-      background: #0e0e0e;
-      border: 1px solid #007BFF;
-      border-radius: 10px;
-    }
-
-    #typing-game {
-      background: #111;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 10px;
-      border: 1px solid #00aaff;
-    }
-
-    .best-score {
-      color: #00ffcc;
-      font-weight: bold;
-    }
-
-    #historyTable {
-      margin-top: 10px;
-    }
-
-    .dropdown-history {
-      cursor: pointer;
-      color: #00aaff;
-      margin-top: 15px;
-      display: inline-block;
-    }
-
-    .dropdown-history:hover {
-      text-decoration: underline;
-    }
-
-    #historyContainer {
-      display: none;
-      transition: all 0.3s ease;
-    }
-
-    .tagline {
-      font-size: 1rem;
-      color: #ccc;
-    }
-
-    .btn-outline-light {
-      border-radius: 8px;
-    }
-  </style>
+        #closeAboutButton {
+            background-color: transparent;
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 20px;
+            padding: 8px 25px;
+            transition: all 0.3s ease;
+        }
+        
+        #closeAboutButton:hover {
+            background-color: var(--neon-cyan);
+            color: #001220;
+            box-shadow: var(--neon-glow);
+        }
+        
+        @media (max-width: 767px) {
+            .metrics {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .metric {
+                margin-bottom: 30px;
+            }
+            
+            .title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Test Progress Styles */
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto 30px;
+            display: none;
+        }
+        
+        .progress-bar-container {
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--neon-cyan);
+            width: 0;
+            border-radius: 5px;
+            box-shadow: var(--neon-glow);
+            transition: width 0.3s;
+        }
+        
+        .progress-text {
+            color: #6c757d;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* Animation for loading state */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
 </head>
-<body class="d-flex flex-column min-vh-100">
-
-  <div class="bubbles">
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-  </div>
-
-  <header>
-    <div>
-      <div class="brand-name">SpeedTest Lite</div>
-      <div class="tagline">Future-Ready Speed Checker</div>
-    </div>
-    <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#aboutModal">About Us</button>
-  </header>
-
-  <main class="hero">
-    <div class="speed-meter" id="speedValue">0</div>
-    <div class="unit">Mbps</div>
-    <button class="btn btn-custom" onclick="startTest()">Start Speed Test</button>
-    <p id="status">This test is currently in development.</p>
-  </main>
-
-  <footer>
-    &copy; 2025 <strong>Umar</strong> | Made with❤️ | Hosted on
-    <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
-  </footer>
-
-  <!-- Error Modal -->
-  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content text-white">
-        <div class="modal-header">
-          <h5 class="modal-title" id="errorModalLabel">🚧 Under Construction</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p>Real speed test is under development. We are building something futuristic. Stay tuned!</p>
-          <p>💡 Meanwhile, play this brain-boosting mini-game:</p>
-          <div id="typing-game">
-            <p><strong>Type this:</strong> <span id="targetText" style="color:#00aaff;"></span></p>
-            <input type="text" id="userInput" class="form-control bg-dark text-white" placeholder="Start typing..." oninput="checkTyping()" />
-            <p id="gameStatus" style="margin-top:10px;">⏱️ Time: <span id="timer">0</span>s</p>
-            <div id="postGameOptions" style="display:none; margin-top:15px;">
-              <button class="btn btn-outline-info" onclick="restartGame()">🔁 Play Again</button>
-              <span class="dropdown-history" onclick="toggleHistory()">📜 View History ▼</span>
-              <div id="historyContainer">
-                <table class="table table-dark table-sm mt-3" id="historyTable">
-                  <thead>
-                    <tr><th>Attempt</th><th>Time</th><th>Timestamp</th></tr>
-                  </thead>
-                  <tbody id="historyBody"></tbody>
-                </table>
-              </div>
+<body>
+    <div class="container my-4">
+        <div class="speedtest-container">
+            <div class="title">
+                <h1>SPEEDTEST <span>LITE</span></h1>
             </div>
-          </div>
+            <div class="subtitle">Test your real internet speed</div>
+            
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-circle">
+                        <svg width="130" height="130" viewBox="0 0 130 130">
+                            <circle cx="65" cy="65" r="54" class="metric-bg" />
+                            <circle cx="65" cy="65" r="54" class="metric-progress" id="downloadProgress" />
+                        </svg>
+                        <div class="metric-value">
+                            <span id="downloadValue">0</span>
+                            <div class="metric-unit">Mbps</div>
+                        </div>
+                    </div>
+                    <div class="metric-label">Download</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-circle">
+                        <svg width="130" height="130" viewBox="0 0 130 130">
+                            <circle cx="65" cy="65" r="54" class="metric-bg" />
+                            <circle cx="65" cy="65" r="54" class="metric-progress" id="uploadProgress" />
+                        </svg>
+                        <div class="metric-value">
+                            <span id="uploadValue">0</span>
+                            <div class="metric-unit">Mbps</div>
+                        </div>
+                    </div>
+                    <div class="metric-label">Upload</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-circle">
+                        <svg width="130" height="130" viewBox="0 0 130 130">
+                            <circle cx="65" cy="65" r="54" class="metric-bg" />
+                            <circle cx="65" cy="65" r="54" class="metric-progress" id="pingProgress" />
+                        </svg>
+                        <div class="metric-value">
+                            <span id="pingValue">0</span>
+                            <div class="metric-unit">ms</div>
+                        </div>
+                    </div>
+                    <div class="metric-label">Ping</div>
+                </div>
+            </div>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="progress-text" id="progressText">Initializing...</div>
+            </div>
+            
+            <button id="startButton" class="start-btn">START TEST</button>
+            
+            <div class="about-container mt-4" id="aboutContainer" style="display: none;">
+                <div class="about-header">
+                    <h3 class="text-center mb-3">About SpeedTest Lite</h3>
+                </div>
+                <div class="about-content">
+                    <p><strong>SpeedTest Lite</strong> is a lightweight, browser-based tool designed to measure your internet connection's performance. It provides accurate measurements of your connection's download speed, upload speed, and ping (latency).</p>
+                    
+                    <p class="text-center my-3">
+                        <a href="https://techuhat.github.io/techuhat" target="_blank" class="techuhat-link">
+                            <span class="tech-text">Tech</span><span class="uhat-text">Uhat</span>
+                        </a>
+                    </p>
+                    
+                    <h5>How It Works</h5>
+                    <p>SpeedTest Lite works by transferring sample data to and from your device and measuring the time it takes to complete these transfers. The test consists of three phases:</p>
+                    <ul>
+                        <li><strong>Ping Test:</strong> Measures the time it takes for a small packet of data to travel from your device to our server and back. Lower ping values indicate better connection quality.</li>
+                        <li><strong>Download Test:</strong> Measures how quickly your connection can retrieve data from the internet. The test downloads sample files and calculates your speed in megabits per second (Mbps).</li>
+                        <li><strong>Upload Test:</strong> Measures how quickly your connection can send data to the internet. The test uploads sample data and calculates your speed in megabits per second (Mbps).</li>
+                    </ul>
+                    
+                    <h5>Understanding Your Results</h5>
+                    <p>Here's what your speed test results mean:</p>
+                    <ul>
+                        <li><strong>Download Speed (Mbps):</strong> Higher is better. This affects streaming video quality, file download times, and web browsing speed.</li>
+                        <li><strong>Upload Speed (Mbps):</strong> Higher is better. This affects video calls, posting to social media, and cloud backups.</li>
+                        <li><strong>Ping (ms):</strong> Lower is better. This affects gaming, video calls, and real-time applications.</li>
+                    </ul>
+                    
+                    <h5>Reference Speeds</h5>
+                    <p>Here are some reference points for internet speeds:</p>
+                    <ul>
+                        <li><strong>Basic web browsing:</strong> 1-5 Mbps download</li>
+                        <li><strong>HD video streaming:</strong> 5-10 Mbps download</li>
+                        <li><strong>4K video streaming:</strong> 25+ Mbps download</li>
+                        <li><strong>Online gaming:</strong> 10+ Mbps download, 1+ Mbps upload, ping under 50ms</li>
+                        <li><strong>Video conferencing:</strong> 3+ Mbps download, 3+ Mbps upload, ping under 100ms</li>
+                    </ul>
+                    
+                    <h5>Privacy</h5>
+                    <p>SpeedTest Lite respects your privacy. We don't store your IP address or track your browsing habits. The test simply measures your connection speed and displays the results.</p>
+                    
+                    <div class="text-center mt-4">
+                        <button id="closeAboutButton" class="btn btn-outline-info">Close</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="#" id="aboutButton" class="btn btn-link text-secondary">About SpeedTest Lite</a
+ 
+
+
+            </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-light" data-bs-dismiss="modal">OK</button>
+        
+        <div class="footer">
+            <p>&copy; Umar — SpeedTest Lite
+                <a href="https://github.com/yourusername/speedtest-lite" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github github-icon"></i>
+                </a>
+            </p>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- About Modal -->
-  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content text-white">
-        <div class="modal-header">
-          <h5 class="modal-title" id="aboutModalLabel">📘 About Us</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p><strong>SpeedTest Lite</strong> is a modern, frontend-only internet speed tester designed for GitHub Pages.</p>
-          <p>Created by <strong>Umar</strong>. Real-time testing coming soon with futuristic UI features.</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- LibreSpeed JS Library (Minified) -->
+    <script>
+        /* LibreSpeed - Main */
+        var LibreSpeed = function() {
+            // Test settings
+            this.settings = {
+                test_order: "ping,download,upload",
+                time_ping: 3,
+                time_download: 10,
+                time_upload: 10,
+                count_ping: 10,
+                download_size: [500, 1000, 2000, 5000, 10000, 20000, 25000, 50000, 100000, 200000], // KB
+                upload_size: [100, 300, 500, 800, 1000, 2000, 5000, 10000, 20000, 50000], // KB
+                servers: [
+                    { name: "Server 1", server: "https://librespeed.org/backend/garbage.php", download: true, upload: true },
+                    { name: "Server 2", server: "https://speedtest.fdossena.com/backend/garbage.php", download: true, upload: true }
+                ]
+            };
 
-  <!-- Bootstrap & Game Script -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const phrases = [
-      "speedtest lite futuristic",
-      "typing is fun and fast",
-      "brain is more powerful than anything",
-      "boost your skills daily",
-      "speed is the new intelligence"
-    ];
-    let currentPhrase = "";
-    let startTime = null;
-    let interval = null;
-    let attemptCount = 0;
-    let history = [];
+            // Test variables
+            this.serverList = [];
+            this.selectedServer = null;
+            this.testState = 0; // 0: not started, 1: ping test, 2: download test, 3: upload test, 4: finished
+            this.pingResults = [];
+            this.jitterResults = [];
+            this.downloadResults = [];
+            this.uploadResults = [];
+            this.dlStatus = 0;
+            this.ulStatus = 0;
+            this.pingStatus = 0;
+            this.jitterStatus = 0;
 
-    function startTest() {
-      const modal = new bootstrap.Modal(document.getElementById('errorModal'));
-      modal.show();
-      restartGame();
-      document.getElementById("status").innerText = "Feature coming soon. Stay tuned!";
-    }
+            // Callbacks
+            this.onupdate = null;
+            this.onend = null;
+            this.onerror = null;
+            this.onprogress = null;
 
-    function pickPhrase() {
-      return phrases[Math.floor(Math.random() * phrases.length)];
-    }
+            // XMLHttpRequest objects
+            this.xhr = null;
+        };
 
-    function restartGame() {
-      currentPhrase = pickPhrase();
-      document.getElementById("targetText").innerText = currentPhrase;
-      document.getElementById("userInput").value = "";
-      document.getElementById("userInput").disabled = false;
-      document.getElementById("gameStatus").innerHTML = "⏱️ Time: <span id='timer'>0</span>s";
-      document.getElementById("postGameOptions").style.display = "none";
-      clearInterval(interval);
-      startTime = null;
-      interval = null;
-    }
+        LibreSpeed.prototype = {
+            /**
+             * Starts the speed test
+             */
+            start: function() {
+                this.testState = 1;
+                this._selectServer();
+            },
 
-    function checkTyping() {
-      const input = document.getElementById("userInput").value;
-      if (input.length === 1 && !startTime) {
-        startTime = new Date().getTime();
-        interval = setInterval(() => {
-          const now = new Date().getTime();
-          const seconds = Math.floor((now - startTime) / 1000);
-          document.getElementById("timer").innerText = seconds;
-        }, 1000);
-      }
+            /**
+             * Aborts the test
+             */
+            abort: function() {
+                if (this.xhr) {
+                    try {
+                        this.xhr.abort();
+                    } catch (e) {}
+                    this.xhr = null;
+                }
+                this.testState = 0;
+            },
 
-      if (input === currentPhrase) {
-        clearInterval(interval);
-        const totalTime = parseInt(document.getElementById("timer").innerText);
-        attemptCount++;
-        const timestamp = new Date().toLocaleString('en-IN', { hour: 'numeric', minute: 'numeric', hour12: true, day: '2-digit', month: 'short' });
-        history.push({ attempt: attemptCount, time: totalTime, timestamp });
-        history.sort((a, b) => a.time - b.time);
+            /**
+             * Selects a server from the server list
+             * @private
+             */
+            _selectServer: function() {
+                // For simplicity, we'll use the first server in the list
+                if (this.settings.servers && this.settings.servers.length > 0) {
+                    this.selectedServer = this.settings.servers[0];
+                    this._nextTest();
+                } else {
+                    if (this.onerror) this.onerror("No servers available");
+                }
+            },
 
-        let rows = "";
-        history.forEach((h, index) => {
-          const isBest = index === 0 ? "<span class='best-score'> ← Your best score</span>" : "";
-          rows += `<tr><td>${h.attempt}</td><td>${h.time} sec</td><td>${h.timestamp}${isBest}</td></tr>`;
+            /**
+             * Runs the next test in the test sequence
+             * @private
+             */
+            _nextTest: function() {
+                const testOrder = this.settings.test_order.split(",");
+                
+                if (this.testState >= 1 && this.testState <= testOrder.length) {
+                    const currentTest = testOrder[this.testState - 1].trim();
+                    
+                    if (currentTest === "ping") {
+                        this._pingTest();
+                    } else if (currentTest === "download") {
+                        this._downloadTest();
+                    } else if (currentTest === "upload") {
+                        this._uploadTest();
+                    } else {
+                        this.testState++;
+                        this._nextTest();
+                    }
+                } else if (this.testState === testOrder.length + 1) {
+                    // All tests finished
+                    if (this.onend) this.onend();
+                    this.testState = 0;
+                } else {
+                    if (this.onerror) this.onerror("Invalid test state");
+                }
+            },
+
+            /**
+             * Performs a ping test
+             * @private
+             */
+            _pingTest: function() {
+                const pingStart = new Date().getTime();
+                
+                this.xhr = new XMLHttpRequest();
+                this.xhr.onload = () => {
+                    if (this.xhr.status === 200) {
+                        const pingEnd = new Date().getTime();
+                        const pingTime = pingEnd - pingStart;
+                        
+                        this.pingResults.push(pingTime);
+                        
+                        if (this.pingResults.length >= this.settings.count_ping) {
+                            // Calculate average ping
+                            const sum = this.pingResults.reduce((a, b) => a + b, 0);
+                            this.pingStatus = Math.round(sum / this.pingResults.length);
+                            
+                            // Calculate jitter
+                            let jitterSum = 0;
+                            for (let i = 1; i < this.pingResults.length; i++) {
+                                jitterSum += Math.abs(this.pingResults[i] - this.pingResults[i - 1]);
+                            }
+                            this.jitterStatus = Math.round(jitterSum / (this.pingResults.length - 1));
+                            
+                            // Update UI
+                            if (this.onupdate) this.onupdate();
+                            
+                            // Move to next test
+                            this.testState++;
+                            this._nextTest();
+                        } else {
+                            // Continue with next ping
+                            this._pingTest();
+                        }
+                    } else {
+                        if (this.onerror) this.onerror("Ping test failed");
+                    }
+                };
+                
+                this.xhr.onerror = () => {
+                    if (this.onerror) this.onerror("Ping test failed");
+                };
+                
+                this.xhr.open("GET", this.selectedServer.server + "?ping=" + pingStart, true);
+                this.xhr.send();
+            },
+
+            /**
+             * Performs a download speed test
+             * @private
+             */
+            _downloadTest: function() {
+                let startTime = new Date().getTime();
+                let downloadedBytes = 0;
+                let prevLoaded = 0;
+                let prevTime = startTime;
+                let bonusTime = 0;
+                
+                const testSize = this.settings.download_size;
+                const randomIndex = Math.floor(Math.random() * testSize.length);
+                const size = testSize[randomIndex];
+                
+                this.xhr = new XMLHttpRequest();
+                this.xhr.responseType = "arraybuffer";
+                
+                this.xhr.onprogress = (event) => {
+                    const currentTime = new Date().getTime();
+                    const loadDiff = event.loaded - prevLoaded;
+                    const timeDiff = currentTime - prevTime;
+                    
+                    if (timeDiff > 0 && loadDiff > 0) {
+                        // Calculate current speed in Mbps
+                        const speed = (loadDiff * 8) / (timeDiff / 1000) / 1000000;
+                        this.dlStatus = speed;
+                        
+                        if (this.onupdate) this.onupdate();
+                        
+                        // Update progress
+                        const elapsed = (currentTime - startTime) / 1000;
+                        const progress = Math.min(elapsed / this.settings.time_download, 1);
+                        if (this.onprogress) this.onprogress(progress, "download");
+                    }
+                    
+                    prevLoaded = event.loaded;
+                    prevTime = currentTime;
+                };
+                
+                this.xhr.onload = () => {
+                    if (this.xhr.status === 200) {
+                        const endTime = new Date().getTime();
+                        const duration = (endTime - startTime) / 1000;
+                        
+                        if (duration < this.settings.time_download) {
+                            // Test ended too quickly, try with a larger file
+                            bonusTime += duration;
+                            if (bonusTime < this.settings.time_download) {
+                                this._downloadTest();
+                                return;
+                            }
+                        }
+                        
+                        // Download test complete
+                        this.downloadResults.push(this.dlStatus);
+                        
+                        // Move to next test
+                        this.testState++;
+                        this._nextTest();
+                    } else {
+                        if (this.onerror) this.onerror("Download test failed");
+                    }
+                };
+                
+                this.xhr.onerror = () => {
+                    if (this.onerror) this.onerror("Download test failed");
+                };
+                
+                this.xhr.open("GET", this.selectedServer.server + "?nocache=" + Math.random() + "&size=" + size, true);
+                this.xhr.send();
+            },
+
+            /**
+             * Performs an upload speed test
+             * @private
+             */
+            _uploadTest: function() {
+                let startTime = new Date().getTime();
+                let prevSent = 0;
+                let prevTime = startTime;
+                
+                const testSize = this.settings.upload_size;
+                const randomIndex = Math.floor(Math.random() * testSize.length);
+                const size = testSize[randomIndex] * 1024; // Convert to bytes
+                
+                // Create blob to upload
+                const blob = new Blob([new ArrayBuffer(size)], { type: 'application/octet-stream' });
+                
+                this.xhr = new XMLHttpRequest();
+                
+                this.xhr.upload.onprogress = (event) => {
+                    const currentTime = new Date().getTime();
+                    const loadDiff = event.loaded - prevSent;
+                    const timeDiff = currentTime - prevTime;
+                    
+                    if (timeDiff > 0 && loadDiff > 0) {
+                        // Calculate current speed in Mbps
+                        const speed = (loadDiff * 8) / (timeDiff / 1000) / 1000000;
+                        this.ulStatus = speed;
+                        
+                        if (this.onupdate) this.onupdate();
+                        
+                        // Update progress
+                        const elapsed = (currentTime - startTime) / 1000;
+                        const progress = Math.min(elapsed / this.settings.time_upload, 1);
+                        if (this.onprogress) this.onprogress(progress, "upload");
+                    }
+                    
+                    prevSent = event.loaded;
+                    prevTime = currentTime;
+                };
+                
+                this.xhr.onload = () => {
+                    if (this.xhr.status === 200) {
+                        const endTime = new Date().getTime();
+                        const duration = (endTime - startTime) / 1000;
+                        
+                        // Upload test complete
+                        this.uploadResults.push(this.ulStatus);
+                        
+                        // Move to next test
+                        this.testState++;
+                        this._nextTest();
+                    } else {
+                        if (this.onerror) this.onerror("Upload test failed");
+                    }
+                };
+                
+                this.xhr.onerror = () => {
+                    if (this.onerror) this.onerror("Upload test failed");
+                };
+                
+                this.xhr.open("POST", this.selectedServer.server, true);
+                this.xhr.send(blob);
+            }
+        };
+
+        // Main application code
+        document.addEventListener("DOMContentLoaded", function() {
+            // Elements
+            const startButton = document.getElementById("startButton");
+            const downloadValue = document.getElementById("downloadValue");
+            const uploadValue = document.getElementById("uploadValue");
+            const pingValue = document.getElementById("pingValue");
+            const downloadProgress = document.getElementById("downloadProgress");
+            const uploadProgress = document.getElementById("uploadProgress");
+            const pingProgress = document.getElementById("pingProgress");
+            const progressContainer = document.getElementById("progressContainer");
+            const progressBar = document.getElementById("progressBar");
+            const progressText = document.getElementById("progressText");
+            
+            // Constants
+            const CIRCLE_RADIUS = 54;
+            const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * CIRCLE_RADIUS;
+            
+            // Initialize progress circles
+            downloadProgress.style.strokeDasharray = CIRCLE_CIRCUMFERENCE;
+            uploadProgress.style.strokeDasharray = CIRCLE_CIRCUMFERENCE;
+            pingProgress.style.strokeDasharray = CIRCLE_CIRCUMFERENCE;
+            downloadProgress.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+            uploadProgress.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+            pingProgress.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+            
+            // Initialize LibreSpeed
+            const speedTest = new LibreSpeed();
+            
+            // Update UI based on test results
+            speedTest.onupdate = function() {
+                if (speedTest.pingStatus > 0) {
+                    pingValue.textContent = speedTest.pingStatus;
+                    // Update ping circle (lower is better, max 200ms)
+                    const pingPercent = Math.max(0, 100 - (speedTest.pingStatus / 2));
+                    const pingOffset = CIRCLE_CIRCUMFERENCE - (pingPercent / 100 * CIRCLE_CIRCUMFERENCE);
+                    pingProgress.style.strokeDashoffset = pingOffset;
+                }
+                
+                if (speedTest.dlStatus > 0) {
+                    downloadValue.textContent = speedTest.dlStatus.toFixed(1);
+                    // Update download circle (higher is better, max 300Mbps)
+                    const dlPercent = Math.min(100, (speedTest.dlStatus / 3));
+                    const dlOffset = CIRCLE_CIRCUMFERENCE - (dlPercent / 100 * CIRCLE_CIRCUMFERENCE);
+                    downloadProgress.style.strokeDashoffset = dlOffset;
+                }
+                
+                if (speedTest.ulStatus > 0) {
+                    uploadValue.textContent = speedTest.ulStatus.toFixed(1);
+                    // Update upload circle (higher is better, max 100Mbps)
+                    const ulPercent = Math.min(100, (speedTest.ulStatus / 1));
+                    const ulOffset = CIRCLE_CIRCUMFERENCE - (ulPercent / 100 * CIRCLE_CIRCUMFERENCE);
+                    uploadProgress.style.strokeDashoffset = ulOffset;
+                }
+            };
+            
+            // Update progress bar during tests
+            speedTest.onprogress = function(percent, testType) {
+                progressBar.style.width = (percent * 100) + "%";
+                
+                if (testType === "download") {
+                    progressText.textContent = "Testing download speed... " + Math.round(percent * 100) + "%";
+                } else if (testType === "upload") {
+                    progressText.textContent = "Testing upload speed... " + Math.round(percent * 100) + "%";
+                }
+            };
+            
+            // Handle test completion
+            speedTest.onend = function() {
+                startButton.disabled = false;
+                startButton.textContent = "START TEST";
+                progressContainer.style.display = "none";
+                
+                downloadValue.classList.remove("pulse");
+                uploadValue.classList.remove("pulse");
+                pingValue.classList.remove("pulse");
+            };
+            
+            // Handle test errors
+            speedTest.onerror = function(err) {
+                console.error("Test error: " + err);
+                startButton.disabled = false;
+                startButton.textContent = "START TEST";
+                progressContainer.style.display = "none";
+                progressText.textContent = "Test failed. Try again.";
+                
+                downloadValue.classList.remove("pulse");
+                uploadValue.classList.remove("pulse");
+                pingValue.classList.remove("pulse");
+            };
+            
+            // About button event listeners
+            const aboutButton = document.getElementById("aboutButton");
+            const closeAboutButton = document.getElementById("closeAboutButton");
+            const aboutContainer = document.getElementById("aboutContainer");
+            
+            aboutButton.addEventListener("click", function(e) {
+                e.preventDefault();
+                aboutContainer.style.display = "block";
+            });
+            
+            closeAboutButton.addEventListener("click", function() {
+                aboutContainer.style.display = "none";
+            });
+            
+            // Start button event listener
+            startButton.addEventListener("click", function() {
+                // Hide about section if visible
+                aboutContainer.style.display = "none";
+                
+                // Reset UI
+                downloadValue.textContent = "0";
+                uploadValue.textContent = "0";
+                pingValue.textContent = "0";
+                downloadProgress.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+                uploadProgress.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+                pingProgress.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+                
+                downloadValue.classList.add("pulse");
+                uploadValue.classList.add("pulse");
+                pingValue.classList.add("pulse");
+                
+                // Show progress bar
+                progressContainer.style.display = "block";
+                progressBar.style.width = "0";
+                progressText.textContent = "Initializing...";
+                
+                // Disable start button
+                startButton.disabled = true;
+                startButton.textContent = "TESTING...";
+                
+                // Start test
+                setTimeout(function() {
+                    speedTest.start();
+                    progressText.textContent = "Testing ping...";
+                }, 1000);
+            });
         });
-        document.getElementById("historyBody").innerHTML = rows;
-
-        document.getElementById("gameStatus").innerHTML = `🎉 Done! You typed it in <strong>${totalTime}s</strong>.`;
-        document.getElementById("userInput").disabled = true;
-        document.getElementById("postGameOptions").style.display = "block";
-      }
-    }
-
-    function toggleHistory() {
-      const container = document.getElementById("historyContainer");
-      container.style.display = container.style.display === "none" ? "block" : "none";
-    }
-  </script>
+    </script>
 </body>
 </html>
